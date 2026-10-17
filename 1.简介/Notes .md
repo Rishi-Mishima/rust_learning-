@@ -72,6 +72,16 @@ $ cd hello_cargo
 >
 > 只要把项目代码移到 *src* 目录中，并创建一个合适的 *Cargo.toml* 文件即可。一个简单的办法是运行 `cargo init`，它会自动为你创建这个文件。
 
+
+
+!! 让Cargo不要生成Git仓库
+
+```shel
+cargo new hello_cargo --vcs none
+```
+
+
+
 ### 构建并允许cargo项目
 
 在 *hello_cargo* 目录下，输入下面的命令来构建项目：
