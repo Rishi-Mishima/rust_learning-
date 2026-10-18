@@ -421,3 +421,63 @@ fn main() {
 }
 ```
 
+**`use std::io;`**
+
+- Brings the `io` module from the standard library into scope. 
+- `use` is like `import` in other languages. `::` is the path separator.
+
+**`let a = [1, 2, 3, 4, 5];`**
+ `let` creates a variable binding. This is an **array**: fixed length, all elements the same type. The type is inferred as `[i32; 5]`. Variables are **immutable by default**.
+
+`String::new()` calls the associated function `new` on type `String`, creating an empty growable string.
+
+**`io::stdin().read_line(&mut index).expect("Failed to read line");`**
+ This is a **method chain**:
+
+- `io::stdin()` returns a handle to standard input.
+- `.read_line(&mut index)` reads a line and appends it into `index`. `&mut index` is a **mutable reference**: you lend `index` out so the function can modify it without taking ownership.
+- `read_line` returns a `Result` (either `Ok` or `Err`). `.expect("...")` unwraps it: on success you continue; on failure the program **panics** with your message.
+
+**`let index: usize = index.trim().parse().expect("Index entered was not a number");`**
+
+- **Shadowing**: a new `let index` reuses the name, replacing the old `String` with a number. The types may differ.
+- `: usize` is a **type annotation**. `usize` is an unsigned integer sized to the machine, and it’s the type required for indexing.
+- `.trim()` removes whitespace, including the `\n` from pressing Enter.
+- `.parse()` converts the string to a number. It knows which type from the `usize` annotation. It also returns a `Result`.
+- `.expect(...)` panics if the input isn’t a valid number.
+
+**`let element = a[index];`**
+ Indexes the array. Rust checks bounds **at runtime**: entering `10` makes the program panic with “index out of bounds” instead of reading invalid memory. That’s the point of this example.
+
+**`println!("... {index} ... {element}");`**
+ `{index}` is **inline formatting**: the variable name goes inside the braces. `{}` with arguments after the string works too.
+
+### Key concepts to remember
+
+| Concept              | Example          |
+| -------------------- | ---------------- |
+| Immutable by default | `let x = 5;`     |
+| Mutable              | `let mut x = 5;` |
+| Shadowing            | `let x = x + 1;` |
+| Reference            | `&x`, `&mut x`   |
+| Result handling      | `.expect("msg")` |
+| Macro                | `println!`       |
+
+### Practice exercises
+
+**1. Easy: Safe indexing.** Modify the program so it doesn’t panic on out-of-range input. Hint: use `a.get(index)`, which returns an `Option<&i32>`, and handle it with `match`:
+
+```
+match a.get(index) {
+    Some(value) => ...,
+    None => ...,
+}
+```
+
+**2. Easy: Two numbers.** Ask the user for two numbers (read each into a `String`, shadow into `i32`), then print their sum.
+
+**3. Medium: Loop until valid.** Keep asking for an index until the input is a valid number. Hint: use `loop { ... }` and `match` on `index.trim().parse::<usize>()` with `Ok(n)` and `Err(_)` arms.
+
+**4. Medium: Array sum.** Make an array `[10, 20, 30, 40]`. Use a `for` loop (`for x in a.iter()`) to compute the total with a `let mut total = 0;`.
+
+**5. Challenge: Mini lookup.** Create an array of names (`["Ann", "Bob", "Cy"]`, type `[&str; 3]`). Ask for an index, print the name, and print a friendly message if the index is out of range, without panicking and without crashing on non-numeric input.
