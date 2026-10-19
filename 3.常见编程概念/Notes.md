@@ -481,3 +481,348 @@ match a.get(index) {
 **4. Medium: Array sum.** Make an array `[10, 20, 30, 40]`. Use a `for` loop (`for x in a.iter()`) to compute the total with a `let mut total = 0;`.
 
 **5. Challenge: Mini lookup.** Create an array of names (`["Ann", "Bob", "Cy"]`, type `[&str; 3]`). Ask for an index, print the name, and print a friendly message if the index is out of range, without panicking and without crashing on non-numeric input.
+
+
+
+---
+
+
+
+## 3.3. 函数
+
+[ch03-03-how-functions-work.md](https://github.com/rust-lang/book/blob/9cc190796f28505c7a9a9cacea42f50d895ff3bd/src/ch03-03-how-functions-work.md)
+
+文件名: 3.常见编程概念/variables/src/bin/3_3_1_functionDemo.rs
+
+```rust
+fn main(){
+   println!("Hello, world!");
+
+    another_function();
+}
+fn another_function() {
+    println!("Another function.");
+}
+```
+
+
+
+### 参数
+
+定义带有 **参数**（*parameters*）的函数
+
+文件名: 3.常见编程概念/variables/src/bin/3_3_2_functionParameters.rs
+
+```rust
+fn main() {
+    another_function(5);
+}
+
+fn another_function(x: i32) {
+    println!("The value of x is: {x}");
+}
+```
+
+当定义多个参数时，使用逗号分隔，像这样：
+
+文件名: 3.常见编程概念/variables/src/bin/3_3_3_functionMutlPara.rs
+
+```rust
+fn main() {
+    print_labeled_measurement(5, 'h')
+}
+
+fn print_labeled_measurement(value: i32, unit_label: char) {
+    println!("The measurement is: {value}{unit_label}");
+}
+```
+
+
+
+### 语句和表达式
+
+- **语句**（*Statements*）是执行一些操作但不返回值的指令。
+- **表达式**（*Expressions*）计算并产生一个值。
+
+> 表达式的结尾没有分号。如果在表达式的结尾加上分号，它就变成了语句，而语句不会返回值。
+
+文件名: 3.常见编程概念/variables/src/bin/3_3_4_expressions.rs
+
+```rust
+fn main() {
+    let x ={
+        let y = 1;
+        y + 1
+    };
+    println!("The value of y is: {y}");
+}
+```
+
+
+
+### 具有返回值的函数
+
+函数可以把值返回给调用它的代码。我们不会给返回值命名，但必须在箭头（`->`）后面声明它的类型。
+
+文件名： 3.常见编程概念/variables/src/bin/3_3_5_function.rs
+
+```rust
+fn five() -> i32 {
+    5
+}
+
+fn main() {
+    let x = five();
+
+    println!("The value of x is: {x}");
+}
+```
+
+其次，`five` 函数没有参数，但定义了返回值类型，而且函数体里只有单独一个没有分号的 `5`，因为这是一个==表达式==，而我们想返回它的值。
+
+- 但如果在`5` 的 行尾加上一个分号，把它从表达式变成语句，我们将看到一个错误
+
+
+
+## 3.4 注释
+
+[ch03-04-comments.md](https://github.com/rust-lang/book/blob/9cc190796f28505c7a9a9cacea42f50d895ff3bd/src/ch03-04-comments.md)
+
+rust中的comments 是 `//`
+
+
+
+## 3.5 控制流
+
+
+
+[ch03-05-control-flow.md](https://github.com/rust-lang/book/blob/9cc190796f28505c7a9a9cacea42f50d895ff3bd/src/ch03-05-control-flow.md)
+
+
+
+### if表达式
+
+文件名: 3.常见编程概念/variables/src/bin/3_5_1_if.rs
+
+```rust
+fn main(){
+  let number = 3; 
+  
+   if number < 5 {
+        println!("condition was true");
+    } else {
+        println!("condition was false");
+    }
+}
+```
+
+> 还值得注意的是，条件**必须**是 `bool` 值。如果条件不是 `bool`，我们就会得到一个错误
+
+
+
+#### else if 条件
+
+文件名: 3.常见编程概念/variables/src/bin/3_5_2_elseIf.rs
+
+```rust
+fn main() {
+    let number = 6;
+
+    if number % 4 == 0 {
+        println!("number is divisible by 4");
+    } else if number % 3 == 0 {
+        println!("number is divisible by 3");
+    } else if number % 2 == 0 {
+        println!("number is divisible by 2");
+    } else {
+        println!("number is not divisible by 4, 3, or 2");
+    }
+}
+```
+
+
+
+#### [在 `let` 语句中使用 `if`](https://kaisery.github.io/trpl-zh-cn/ch03-05-control-flow.html#在-let-语句中使用-if)
+
+```rust
+fn main() {
+    let condition = true;
+
+    let number = if condition { 5 } else { "six" };
+
+    println!("The value of number is: {number}");
+}
+```
+
+`if` 代码块中的表达式会求值为一个整数，而 `else` 代码块中的表达式会求值为一个字符串。这是行不通的，因为变量必须只有一个类型。
+
+
+
+#### 使用循环
+
+```rust
+fn main(){
+  loop{
+    println!("Print!"); 
+  }
+}
+```
+
+运行这个程序时，我们会看到 `again!` 被不断重复打印，直到我们手动停止程序。大多数终端都支持使用快捷键 ctrl-C 来中断一个陷入无限循环的程序。
+
+
+
+##### loop 循环的使用
+
+文件名: 3.常见编程概念/variables/src/bin/3_5_3_loop.rs
+
+```rust
+fn main() {
+    let mut counter = 0;
+
+    let result = loop {
+        counter += 1;
+
+        if counter == 10 {
+            break counter * 2;
+        }
+    };
+
+    println!("The result is {result}");
+}
+```
+
+> result 不用写成mut 
+>
+> Because `result` is only assigned **once**. `mut` is needed when you change a variable’s value *after* it has been created, not when you give it its first value.
+
+
+
+##### Loop嵌套
+
+```rust
+fn main() {
+    let mut count = 0;
+    'counting_up: loop {
+        println!("count = {count}");
+        let mut remaining = 10;
+
+        loop {
+            println!("remaining = {remaining}");
+            if remaining == 9 {
+                break;
+            }
+            if count == 2 {
+                break 'counting_up;
+            }
+            remaining -= 1;
+        }
+
+        count += 1;
+    }
+    println!("End count = {count}");
+}
+```
+
+Output: 
+
+```
+count = 0
+remaining = 10
+remaining = 9
+count = 1
+remaining = 10
+remaining = 9
+count = 2
+remaining = 10
+End count = 2
+```
+
+这里的inner loop不需要semicolon了
+
+Because the closing `}` already ends the statement. That’s a grammar rule in Rust: an expression that ends with a block (`loop`, `while`, `for`, `if`, `match`, `{ }`) is considered complete on its own, so no `;` is needed after it.
+
+- A loop doesn’t need a semicolon **when it’s used as a standalone statement and its value is `()`**
+
+### Where the semicolon is NOT needed
+
+The loop sits on its own line, as a statement, and produces `()`:
+
+rust
+
+```rust
+loop {
+    ...
+    break;
+}
+count += 1;     // next statement
+```
+
+### Where the semicolon IS needed
+
+**1. When the loop is the right side of a `let`.** The `;` belongs to the `let`, not to the loop:
+
+rust
+
+```rust
+let result = loop {
+    break counter * 2;
+};              // required
+```
+
+**2. When the loop produces a non-`()` value and sits in the middle of other code.** Rust expects you to say what happens to that value:
+
+rust
+
+```rust
+loop { break 5; }   // value is 5, not ()
+count += 1;         // error: mismatched types
+```
+
+Fix: `loop { break 5; };`
+
+**3. As the last thing in a function or block, where the value matters.** A loop at the end of a block becomes that block’s return value, which is a separate topic, but it’s why the `()` rule exists.
+
+
+
+What `'counting_up:` is
+
+> label需要有 ‘ 
+>
+> . The `'` is what tells the compiler “this identifier is a label,” and it’s part of the label’s name.
+
+| Syntax                  | Meaning                              |
+| ----------------------- | ------------------------------------ |
+| `'counting_up: loop {}` | loop label                           |
+| `&'a str`               | lifetime annotation                  |
+| `'static`               | the special “lives forever” lifetime |
+
+`'counting_up:` is a **loop label**. It’s a name you attach to a loop (the leading `'` is part of the syntax, and it’s not a character or lifetime here).
+
+Normally, `break` and `continue` only affect the **innermost** loop they sit in. A label lets you target an **outer** loop instead:
+
+```rust
+break;              // exits the innermost loop
+break 'counting_up; // exits the loop labeled 'counting_up
+```
+
+Without the label, there would be no way to exit the outer loop from inside the inner one.
+
+Structure 
+
+```rust
+'counting_up: loop {          // OUTER loop
+    ...
+    loop {                    // INNER loop
+        ...
+        break;                // leaves INNER only
+        break 'counting_up;   // leaves OUTER (and so the inner too)
+    }
+    count += 1;
+}
+```
+
+Each outer iteration prints `count`, resets `remaining` to 10, then the inner loop counts `remaining` down. The inner loop has two exits:
+
+- `remaining == 9` → plain `break`: leave the inner loop, then run `count += 1` and start the next outer iteration.
+- `count == 2` → `break 'counting_up`: leave **both** loops immediately, skipping `count += 1`.
